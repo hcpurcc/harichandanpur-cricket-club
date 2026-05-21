@@ -6,8 +6,6 @@ Official website for Harichandanpur Cricket Club (HCC). Static site, vanilla HTM
 **Shipping?** See [`DEPLOY.md`](./DEPLOY.md) for the full pre-flight checklist.
 ---
 
----
-
 ## Stack
 
 | Layer | Tool |
