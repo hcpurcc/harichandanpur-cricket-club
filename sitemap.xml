@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://harichandanpurcc.netlify.app/</loc>
+    <loc>https://harichandanpurclub.netlify.app/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://harichandanpurcc.netlify.app/about.html</loc>
+    <loc>https://harichandanpurclub.netlify.app/about.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://harichandanpurcc.netlify.app/team.html</loc>
+    <loc>https://harichandanpurclub.netlify.app/team.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://harichandanpurcc.netlify.app/matches.html</loc>
+    <loc>https://harichandanpurclub.netlify.app/matches.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://harichandanpurcc.netlify.app/gallery.html</loc>
+    <loc>https://harichandanpurclub.netlify.app/gallery.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://harichandanpurcc.netlify.app/news.html</loc>
+    <loc>https://harichandanpurclub.netlify.app/news.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://harichandanpurcc.netlify.app/contact.html</loc>
+    <loc>https://harichandanpurclub.netlify.app/contact.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://harichandanpurcc.netlify.app/membership.html</loc>
+    <loc>https://harichandanpurclub.netlify.app/membership.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

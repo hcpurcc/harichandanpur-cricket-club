@@ -125,6 +125,29 @@
       align-items: flex-end;
       text-align: right;
     }
+    @media (max-width: 479px) {
+      .match-card-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: var(--space-2);
+      }
+      .match-card-side,
+      .match-card-side.opponent {
+        align-items: center;
+        text-align: center;
+      }
+      .match-card-vs {
+        padding-block: var(--space-1);
+      }
+      .tabs {
+        width: 100%;
+        justify-content: stretch;
+      }
+      .tab {
+        flex: 1;
+        justify-content: center;
+      }
+    }
     .match-card-team {
       font-family: var(--font-display);
       font-weight: 700;

@@ -154,6 +154,40 @@
     .lightbox-prev  { left: 24px; top: 50%; transform: translateY(-50%); }
     .lightbox-next  { right: 24px; top: 50%; transform: translateY(-50%); }
 
+    @media (max-width: 640px) {
+      .lightbox-img {
+        max-width: calc(100vw - var(--space-4));
+        max-height: 65vh;
+      }
+      .lightbox-close {
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+      }
+      .lightbox-prev,
+      .lightbox-next {
+        top: auto;
+        bottom: 16px;
+        width: 44px;
+        height: 44px;
+      }
+      .lightbox-prev {
+        left: 50%;
+        transform: translateX(calc(-50% - 28px));
+      }
+      .lightbox-next {
+        right: 50%;
+        left: auto;
+        transform: translateX(calc(50% + 28px));
+      }
+      .lightbox-caption {
+        bottom: 72px;
+        max-width: calc(100vw - var(--space-5));
+        text-align: center;
+      }
+    }
+
     .state {
       padding: var(--space-8);
       text-align: center;
