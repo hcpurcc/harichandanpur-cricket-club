@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0A0E0F">
+  <title>Contact — Harichandanpur Club</title>
+  <meta name="description" content="Get in touch with Harichandanpur Club.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Contact HCC">
+  <meta property="og:description" content="Reach Harichandanpur Club.">
+  <meta property="og:image" content="/images/logo.svg">
+
+  <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/animations.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <style>
+    .page-hero {
+      position: relative;
+      padding-block: var(--space-9) var(--space-7);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -10%;
+      width: 60%; height: 120%;
+      background: radial-gradient(circle, rgba(0,255,136,0.10), transparent 70%);
+      filter: blur(60px);
+      pointer-events: none;
+    }
+    .page-hero-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(40px, 7vw, 96px);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+    }
+    .page-hero-lead {
+      max-width: 540px;
+      margin-top: var(--space-4);
+      color: var(--text-secondary);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: var(--space-7);
+      align-items: start;
+    }
+    @media (max-width: 1024px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+
+    .info-card {
+      padding: var(--space-5);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    .info-item {
+      display: flex;
+      gap: var(--space-3);
+      padding-block: var(--space-3);
+    }
+    .info-item + .info-item { border-top: 1px solid var(--border); }
+    .info-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      background: rgba(0,255,136,0.10);
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .info-icon i { color: var(--accent-neon); width: 18px; height: 18px; }
+    .info-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+    .info-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-top: 2px;
+      word-break: break-word;
+    }
+    .info-value a:hover { color: var(--accent-neon); }
+
+    /* Form status */
+    .form-status {
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      display: none;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .form-status.is-visible { display: flex; }
+    .form-status.is-success { background: rgba(0,255,136,0.10); color: var(--success); border: 1px solid rgba(0,255,136,0.30); }
+    .form-status.is-error   { background: rgba(255,68,68,0.10);  color: var(--danger);  border: 1px solid rgba(255,68,68,0.30); }
+  </style>
+</head>
+<body data-page="contact">
+
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a class="navbar-brand" href="/index.html">
+        <img class="navbar-brand-logo" src="/images/logo.svg" alt="HCC logo" width="36" height="36">
+        <span>Harichandanpur Club</span>
+      </a>
+      <nav class="navbar-links" aria-label="Primary">
+        <a class="navbar-link" data-page="home"    href="/index.html">Home</a>
+        <a class="navbar-link" data-page="about"   href="/about.html">About</a>
+        <a class="navbar-link" data-page="team"    href="/team.html">Team</a>
+        <a class="navbar-link" data-page="matches" href="/matches.html">Matches</a>
+        <a class="navbar-link" data-page="gallery" href="/gallery.html">Gallery</a>
+        <a class="navbar-link" data-page="news"    href="/news.html">News</a>
+        <a class="navbar-link" data-page="contact" href="/contact.html">Contact</a>
+        <a class="btn btn-primary btn-sm" href="/membership.html">Join</a>
+      </nav>
+      <button class="navbar-toggle" aria-label="Open menu" aria-expanded="false">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <div class="container">
+        <p class="text-label fade-in">Contact</p>
+        <h1 class="page-hero-title slide-up">Drop us <span class="gradient-text">a line.</span></h1>
+        <p class="page-hero-lead text-body-lg slide-up" data-delay="0.2">
+          Got a question, a match request, or just want to say hi? We are listening.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+
+          <!-- Form -->
+          <div class="slide-up">
+            <p class="text-label">Send a message</p>
+            <h2 class="text-display mt-3">Tell us what is up.</h2>
+
+            <form class="mt-5" data-contact-form novalidate>
+              <div class="form-group">
+                <label class="form-label" for="contact-name">Your name</label>
+                <input class="form-input" id="contact-name" name="name" type="text" required autocomplete="name" placeholder="Virat from Harichandanpur">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="contact-email">Email</label>
+                <input class="form-input" id="contact-email" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="contact-subject">Subject</label>
+                <input class="form-input" id="contact-subject" name="subject" type="text" placeholder="Match request, feedback, or anything else">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="contact-message">Message</label>
+                <textarea class="form-textarea" id="contact-message" name="message" rows="6" required placeholder="Tell us what is on your mind..."></textarea>
+              </div>
+
+              <!-- Honeypot for spam bots -->
+              <input type="text" name="botcheck" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px;">
+
+              <div class="form-status" data-form-status>
+                <i data-lucide="info"></i>
+                <span data-form-status-message>Status</span>
+              </div>
+
+              <div class="mt-4 flex gap-3 items-center" style="flex-wrap: wrap;">
+                <button class="btn btn-primary" type="submit" data-submit>
+                  <span data-submit-label>Send message</span>
+                  <i data-lucide="send"></i>
+                </button>
+                <span class="text-small text-muted">We reply within 1–2 days.</span>
+              </div>
+            </form>
+          </div>
+
+          <!-- Info card -->
+          <aside class="slide-up" data-delay="0.1">
+            <p class="text-label">Reach us directly</p>
+            <h2 class="text-display mt-3">Other ways.</h2>
+
+            <div class="info-card mt-5">
+              <div class="info-item">
+                <span class="info-icon"><i data-lucide="mail"></i></span>
+                <div>
+                  <p class="info-label">Email</p>
+                  <p class="info-value">
+                    <a href="mailto:harichandanpurcricketclub@gmail.com">harichandanpurcricketclub@gmail.com</a>
+                  </p>
+                </div>
+              </div>
+              <div class="info-item">
+                <span class="info-icon"><i data-lucide="map-pin"></i></span>
+                <div>
+                  <p class="info-label">Where we play</p>
+                  <p class="info-value">Harichandanpur</p>
+                </div>
+              </div>
+              <div class="info-item">
+                <span class="info-icon"><i data-lucide="clock"></i></span>
+                <div>
+                  <p class="info-label">Response time</p>
+                  <p class="info-value">1–2 business days</p>
+                </div>
+              </div>
+              <div class="info-item">
+                <span class="info-icon"><i data-lucide="share-2"></i></span>
+                <div>
+                  <p class="info-label">Socials</p>
+                  <div class="footer-socials mt-2" style="gap: var(--space-2);">
+                    <a class="footer-social" href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                    <a class="footer-social" href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+                    <a class="footer-social" href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="navbar-brand" href="/index.html">
+            <img class="navbar-brand-logo" src="/images/logo.svg" alt="HCC" width="36" height="36">
+            <span data-club-name>Harichandanpur Club</span>
+          </a>
+          <p class="text-small text-muted mt-4" style="max-width: 320px;">
+            Local kids, big dreams. The official home of Harichandanpur Club.
+          </p>
+        </div>
+        <div>
+          <p class="footer-col-title">Explore</p>
+          <a class="footer-link" href="/about.html">About</a>
+          <a class="footer-link" href="/team.html">Team</a>
+          <a class="footer-link" href="/matches.html">Matches</a>
+          <a class="footer-link" href="/gallery.html">Gallery</a>
+        </div>
+        <div>
+          <p class="footer-col-title">Community</p>
+          <a class="footer-link" href="/news.html">News</a>
+          <a class="footer-link" href="/membership.html">Join the club</a>
+          <a class="footer-link" href="/contact.html">Contact</a>
+          <a class="footer-link" href="/login.html">Player login</a>
+        </div>
+        <div>
+          <p class="footer-col-title">Reach us</p>
+          <a class="footer-link" href="mailto:harichandanpurcricketclub@gmail.com">harichandanpurcricketclub@gmail.com</a>
+          <div class="footer-socials mt-3">
+            <a class="footer-social" href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+            <a class="footer-social" href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+            <a class="footer-social" href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-year>2026</span> Harichandanpur Club. All rights reserved.</span>
+        <span class="text-muted">
+          Built with love in Harichandanpur
+          <span aria-hidden="true"> · </span>
+          <a href="/admin.html" class="footer-bottom-link">Admin</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/pages/contact.js"></script>
+</body>
+</html>

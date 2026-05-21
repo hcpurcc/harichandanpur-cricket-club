@@ -1,0 +1,354 @@
+/* ==========================================================================
+   Harichandanpur Cricket Club — Animation Utilities
+   ==========================================================================
+   These classes set the INITIAL hidden state. JS (GSAP / ScrollTrigger) is
+   responsible for animating elements INTO their natural state.
+
+   Pattern:
+     1. Add a class like .fade-in to an element in HTML.
+     2. GSAP picks it up via selector and animates opacity/transform to 1/0.
+     3. Element becomes visible.
+
+   Pure-CSS hover micro-interactions live at the bottom — no JS needed.
+   ========================================================================== */
+
+/* ---------- 1. Initial hidden states (GSAP animates these IN) ---------- */
+
+.anim-fade,
+.fade-in {
+  opacity: 0;
+  will-change: opacity;
+}
+
+.anim-slide-up,
+.slide-up {
+  opacity: 0;
+  transform: translateY(40px);
+  will-change: opacity, transform;
+}
+
+.anim-slide-down,
+.slide-down {
+  opacity: 0;
+  transform: translateY(-40px);
+  will-change: opacity, transform;
+}
+
+.anim-slide-left,
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  will-change: opacity, transform;
+}
+
+.anim-slide-right,
+.slide-in-right {
+  opacity: 0;
+  transform: translateX(60px);
+  will-change: opacity, transform;
+}
+
+.anim-scale,
+.scale-in {
+  opacity: 0;
+  transform: scale(0.92);
+  will-change: opacity, transform;
+}
+
+.anim-blur,
+.blur-in {
+  opacity: 0;
+  filter: blur(12px);
+  will-change: opacity, filter;
+}
+
+/* Used on parent — children with .stagger-child get sequenced */
+.stagger-child {
+  opacity: 0;
+  transform: translateY(24px);
+  will-change: opacity, transform;
+}
+
+/* Image / video reveal — mask wipe */
+.reveal-mask {
+  position: relative;
+  overflow: hidden;
+}
+.reveal-mask::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-primary);
+  transform-origin: right center;
+  z-index: 2;
+  will-change: transform;
+}
+
+/* Text split — wrappers prepared, JS will split chars/words */
+.split-text {
+  overflow: hidden;
+}
+.split-line {
+  display: block;
+  overflow: hidden;
+}
+.split-word,
+.split-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(100%);
+  will-change: opacity, transform;
+}
+
+/* ---------- 2. Continuous / loop animations (pure CSS) ---------- */
+
+.float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 16px var(--accent-neon-glow); }
+  50%      { box-shadow: 0 0 40px var(--accent-neon-glow); }
+}
+
+.rotate-slow {
+  animation: rotate-slow 14s linear infinite;
+}
+
+@keyframes rotate-slow {
+  to { transform: rotate(360deg); }
+}
+
+.marquee {
+  display: flex;
+  gap: var(--space-6);
+  overflow: hidden;
+}
+.marquee-track {
+  display: flex;
+  gap: var(--space-6);
+  flex-shrink: 0;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+/* Scroll indicator */
+.scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-tertiary);
+}
+.scroll-cue-arrow {
+  width: 2px;
+  height: 24px;
+  background: var(--accent-neon);
+  animation: scroll-cue 1.6s ease-in-out infinite;
+}
+
+@keyframes scroll-cue {
+  0%   { transform: translateY(-8px); opacity: 0; }
+  50%  { opacity: 1; }
+  100% { transform: translateY(8px); opacity: 0; }
+}
+
+/* ---------- 3. Hover micro-interactions (pure CSS) ---------- */
+
+.hover-lift {
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.hover-tilt {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.hover-tilt:hover {
+  transform: perspective(800px) rotateX(4deg) rotateY(-4deg);
+}
+
+.hover-glow {
+  transition: box-shadow var(--dur-base) var(--ease-out);
+}
+.hover-glow:hover {
+  box-shadow: var(--glow-neon-lg);
+}
+
+.hover-underline {
+  position: relative;
+}
+.hover-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width var(--dur-base) var(--ease-out);
+}
+.hover-underline:hover::after {
+  width: 100%;
+}
+
+.hover-zoom {
+  overflow: hidden;
+}
+.hover-zoom > img,
+.hover-zoom > .zoom-target {
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.hover-zoom:hover > img,
+.hover-zoom:hover > .zoom-target {
+  transform: scale(1.06);
+}
+
+/* Magnetic button — JS will translate; CSS just smooths return */
+.magnetic {
+  transition: transform var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+
+/* ---------- 4. Click / active feedback ---------- */
+
+.press {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.press:active {
+  transform: scale(0.96);
+}
+
+/* ---------- 5. Page transitions ---------- */
+
+.page-enter {
+  opacity: 0;
+  animation: page-enter var(--dur-slow) var(--ease-out) forwards;
+}
+
+@keyframes page-enter {
+  to { opacity: 1; }
+}
+
+/* Curtain transition overlay — JS toggles .is-active */
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  background: var(--accent-neon);
+  z-index: var(--z-modal);
+  transform: translateY(100%);
+  pointer-events: none;
+  will-change: transform;
+}
+.page-curtain.is-active {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ---------- 6. Number counter (used with JS counter) ---------- */
+
+.counter {
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+}
+
+/* ---------- 7. Reveal when in viewport (CSS-only fallback) ----------
+   Used if GSAP fails to load — IntersectionObserver in main.js adds
+   .in-view to elements with .anim-fade / .slide-up etc. Same final
+   state is reached so the page stays usable. */
+
+.anim-fade.in-view,
+.fade-in.in-view {
+  opacity: 1;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+
+.anim-slide-up.in-view,
+.slide-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+.anim-slide-left.in-view,
+.slide-in-left.in-view,
+.anim-slide-right.in-view,
+.slide-in-right.in-view {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+.anim-scale.in-view,
+.scale-in.in-view {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+.anim-blur.in-view,
+.blur-in.in-view {
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    filter var(--dur-slow) var(--ease-out);
+}
+
+/* ---------- 8. Respect user preference ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .anim-fade,
+  .anim-slide-up,
+  .anim-slide-down,
+  .anim-slide-left,
+  .anim-slide-right,
+  .anim-scale,
+  .anim-blur,
+  .fade-in,
+  .slide-up,
+  .slide-down,
+  .slide-in-left,
+  .slide-in-right,
+  .scale-in,
+  .blur-in,
+  .stagger-child,
+  .split-word,
+  .split-char {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}

@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Harichandanpur Cricket Club — Responsive Overrides
+   ==========================================================================
+   Mobile-first. style.css defines mobile/base values. This file scales up.
+
+   Breakpoints (min-width):
+     480px  — large phone
+     768px  — tablet portrait
+     1024px — laptop / tablet landscape
+     1440px — desktop wide
+
+   Rule: never hardcode colors or fonts here. Only sizing / layout shifts.
+   ========================================================================== */
+
+/* ---------- Mobile base overrides ( <480px ) ----------
+   style.css already targets mobile. Only add tiny-phone tweaks here. */
+
+@media (max-width: 479px) {
+  :root {
+    --container-pad: 16px;
+    --nav-height: var(--nav-height-mob);
+  }
+
+  body {
+    padding-top: var(--nav-height-mob);
+  }
+
+  .section    { padding-block: var(--space-7); }
+  .section-sm { padding-block: var(--space-6); }
+  .section-lg { padding-block: var(--space-8); }
+
+  /* Collapse multi-column grids to single column */
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Navbar — show toggle, hide horizontal link list */
+  .navbar-links {
+    display: none;
+  }
+  .navbar-toggle {
+    display: inline-flex;
+  }
+
+  /* Mobile menu — full screen drawer when .is-open is set on parent */
+  .navbar.is-open .navbar-links {
+    display: flex;
+    position: fixed;
+    inset: var(--nav-height-mob) 0 0 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-6) var(--container-pad);
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border);
+    z-index: var(--z-dropdown);
+  }
+  .navbar.is-open .navbar-link {
+    font-size: 22px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    padding-block: var(--space-3);
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--space-3);
+    text-align: center;
+  }
+
+  /* Buttons full-width on tiny screens (default looks cramped) */
+  .hero .btn,
+  .btn-block {
+    width: 100%;
+  }
+
+  .card,
+  .card-elevated {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Large phone ( >=480px ) ---------- */
+
+@media (min-width: 480px) {
+  .grid-2-sm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .navbar-toggle { display: none; }
+  .navbar-links  { display: flex; }
+}
+
+/* ---------- Tablet portrait ( >=768px ) ---------- */
+
+@media (min-width: 768px) {
+  :root {
+    --container-pad: 32px;
+  }
+
+  .section    { padding-block: var(--space-9); }
+  .section-lg { padding-block: var(--space-10); }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-grid {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
+
+/* ---------- Laptop / tablet landscape ( >=1024px ) ---------- */
+
+@media (min-width: 1024px) {
+  :root {
+    --container-pad: 40px;
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .footer-grid {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+
+  /* Wider buttons feel right on bigger screens */
+  .btn {
+    padding: 16px 32px;
+    font-size: 16px;
+  }
+  .btn-sm { padding: 12px 22px; font-size: 14px; }
+  .btn-lg { padding: 20px 40px; font-size: 18px; }
+
+  /* Hero gets more breathing room */
+  .hero {
+    min-height: calc(100vh - var(--nav-height));
+  }
+}
+
+/* ---------- Desktop wide ( >=1440px ) ---------- */
+
+@media (min-width: 1440px) {
+  :root {
+    --container-pad: 48px;
+  }
+
+  .section    { padding-block: 120px; }
+  .section-lg { padding-block: 160px; }
+}
+
+/* ---------- Print ---------- */
+
+@media print {
+  .navbar,
+  .footer,
+  .btn,
+  .page-curtain {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    padding-top: 0;
+  }
+
+  .card {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+}
+
+/* ---------- Hover-capable devices only ---------- */
+
+@media (hover: none) {
+  /* Touch devices — remove hover lifts so they don't stick after tap */
+  .card-hover:hover,
+  .player-card:hover,
+  .hover-lift:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}

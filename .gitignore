@@ -1,0 +1,45 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+secrets.json
+
+# Dependencies (not used currently, future-proof)
+node_modules/
+package-lock.json
+
+# Build output
+dist/
+build/
+
+# Netlify
+.netlify/
+
+# Local dev
+.cache/
+.tmp/
+
+# Private docs (credentials inside)
+PROJECT_PLAN_v5_FINAL.md
+BACKEND_PATCH.md
+DEPLOY.md
+
+# Internal notes / prompts
+codex_prompt_*.md
+prompt_*.md

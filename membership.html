@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0A0E0F">
+  <title>Join — Harichandanpur Club</title>
+  <meta name="description" content="Apply for membership at Harichandanpur Club. Three flexible plans, one community.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Join HCC">
+  <meta property="og:description" content="Apply for membership at Harichandanpur Club. Three flexible plans, one community.">
+  <meta property="og:image" content="/images/logo.svg">
+
+  <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/animations.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <style>
+    .page-hero {
+      position: relative;
+      padding-block: var(--space-9) var(--space-7);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      text-align: center;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(0,255,136,0.18), transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(255,215,0,0.10), transparent 60%);
+      pointer-events: none;
+    }
+    .page-hero-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(40px, 7vw, 96px);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+    }
+    .page-hero-lead {
+      max-width: 560px;
+      margin: var(--space-4) auto 0;
+      color: var(--text-secondary);
+    }
+
+    /* Steps */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+      position: relative;
+    }
+    @media (max-width: 768px) {
+      .steps { grid-template-columns: 1fr; }
+    }
+    .step {
+      position: relative;
+      padding: var(--space-5);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    .step-num {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 56px;
+      line-height: 1;
+      color: var(--accent-neon);
+      margin-bottom: var(--space-3);
+    }
+    .step-icon {
+      position: absolute;
+      top: var(--space-5);
+      right: var(--space-5);
+      width: 28px;
+      height: 28px;
+      color: var(--text-muted);
+    }
+
+    /* Pricing tiers */
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+    @media (max-width: 768px) {
+      .tier-grid { grid-template-columns: 1fr; }
+    }
+    .tier-card {
+      position: relative;
+      padding: var(--space-6) var(--space-5);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+    }
+    .tier-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-active);
+    }
+    .tier-card.is-featured {
+      border: 1px solid var(--accent-neon);
+      box-shadow: 0 0 0 1px var(--accent-neon), 0 0 40px rgba(0,255,136,0.15);
+    }
+    .tier-badge {
+      position: absolute;
+      top: calc(var(--space-3) * -1);
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 6px 14px;
+      background: var(--accent-neon);
+      color: var(--text-inverse);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border-radius: var(--radius-pill);
+      white-space: nowrap;
+    }
+    .tier-badge.is-required {
+      background: var(--warning);
+      color: var(--text-inverse);
+    }
+    .tier-card.is-required {
+      border-color: var(--warning);
+      box-shadow: 0 0 0 1px var(--warning), 0 0 40px rgba(255,215,0,0.12);
+    }
+    .tier-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-2);
+    }
+    .tier-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 1.2;
+      margin-bottom: var(--space-4);
+    }
+    .tier-price {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+    }
+    .tier-amount {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 5vw, 48px);
+      color: var(--accent-neon);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .tier-period {
+      font-size: 14px;
+      color: var(--text-tertiary);
+    }
+    .tier-desc {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+      flex: 1;
+    }
+    .tier-note {
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 1px dashed var(--border);
+      font-size: 12px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.05em;
+    }
+
+    /* Apply CTA block */
+    .apply-shell {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+      padding: var(--space-7) var(--space-5);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    .apply-shell .text-h2 { margin-bottom: var(--space-3); }
+    .apply-shell .btn { margin-top: var(--space-5); }
+
+    /* FAQ */
+    .faq {
+      padding: var(--space-5);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .faq-item + .faq-item {
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--border);
+    }
+    .faq-q {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-weight: 600;
+    }
+    .faq-q i { color: var(--accent-neon); width: 16px; height: 16px; }
+    .faq-a {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-top: var(--space-2);
+    }
+  </style>
+</head>
+<body data-page="membership">
+
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a class="navbar-brand" href="/index.html">
+        <img class="navbar-brand-logo" src="/images/logo.svg" alt="HCC logo" width="36" height="36">
+        <span>Harichandanpur Club</span>
+      </a>
+      <nav class="navbar-links" aria-label="Primary">
+        <a class="navbar-link" data-page="home"    href="/index.html">Home</a>
+        <a class="navbar-link" data-page="about"   href="/about.html">About</a>
+        <a class="navbar-link" data-page="team"    href="/team.html">Team</a>
+        <a class="navbar-link" data-page="matches" href="/matches.html">Matches</a>
+        <a class="navbar-link" data-page="gallery" href="/gallery.html">Gallery</a>
+        <a class="navbar-link" data-page="news"    href="/news.html">News</a>
+        <a class="navbar-link" data-page="contact" href="/contact.html">Contact</a>
+        <a class="btn btn-primary btn-sm" href="/membership.html">Join</a>
+      </nav>
+      <button class="navbar-toggle" aria-label="Open menu" aria-expanded="false">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <div class="container">
+        <p class="text-label fade-in">Membership</p>
+        <h1 class="page-hero-title slide-up">Join the squad.</h1>
+        <p class="page-hero-lead text-body-lg slide-up" data-delay="0.2">
+          Pick a joining plan (lifetime or annual), then keep the lights on with ₹50/month. Simple.
+        </p>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section">
+      <div class="container">
+        <div class="text-center" style="max-width: 540px; margin: 0 auto var(--space-7);">
+          <p class="text-label slide-up">How it works</p>
+          <h2 class="text-display mt-3 slide-up">Three steps to the team.</h2>
+        </div>
+
+        <div class="steps" data-stagger>
+          <div class="step stagger-child">
+            <i data-lucide="file-text" class="step-icon"></i>
+            <p class="step-num">01</p>
+            <h3 class="text-h2">Apply</h3>
+            <p class="text-body text-secondary mt-3">
+              Hit the Apply button below. Two-minute form — photo, basic details and a quick note
+              on why you want to play.
+            </p>
+          </div>
+          <div class="step stagger-child">
+            <i data-lucide="user-check" class="step-icon"></i>
+            <p class="step-num">02</p>
+            <h3 class="text-h2">Review</h3>
+            <p class="text-body text-secondary mt-3">
+              Club admins review your application. We may reach out for a quick chat or a
+              practice session before confirming.
+            </p>
+          </div>
+          <div class="step stagger-child">
+            <i data-lucide="trophy" class="step-icon"></i>
+            <p class="step-num">03</p>
+            <h3 class="text-h2">Welcome</h3>
+            <p class="text-body text-secondary mt-3">
+              You receive a welcome email with your member ID. Log in to the dashboard and
+              start marking yourself available for matches.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing tiers -->
+    <section class="section">
+      <div class="container">
+        <div class="text-center" style="max-width: 540px; margin: 0 auto var(--space-7);">
+          <p class="text-label slide-up">Plans</p>
+          <h2 class="text-display mt-3 slide-up">How fees work.</h2>
+          <p class="text-body text-secondary mt-3 slide-up">
+            Two parts: a one-time joining fee (lifetime or annual &mdash; pick one), plus
+            a mandatory &#8377;50/month contribution for every active member. Fees go
+            straight into ground upkeep, kits and match logistics.
+          </p>
+        </div>
+
+        <div class="tier-grid" data-stagger>
+          <article class="tier-card is-featured stagger-child">
+            <span class="tier-badge">Best Value</span>
+            <p class="tier-label">Life Time Member</p>
+            <h3 class="tier-name">One payment.<br>Forever in.</h3>
+            <div class="tier-price">
+              <span class="tier-amount">&#8377;2400</span>
+              <span class="tier-period">one-time</span>
+            </div>
+            <p class="tier-desc">
+              Lifetime access to the club. No renewals, no recurring reminders, no chasing
+              annual deadlines &mdash; you&rsquo;re in for good.
+            </p>
+            <p class="tier-note">Pays for itself in 8 years vs annual.</p>
+          </article>
+
+          <article class="tier-card stagger-child">
+            <p class="tier-label">Annual Member</p>
+            <h3 class="tier-name">A season at a time.</h3>
+            <div class="tier-price">
+              <span class="tier-amount">&#8377;300</span>
+              <span class="tier-period">/ year</span>
+            </div>
+            <p class="tier-desc">
+              Full member benefits for the year. Valid until 26 January of the following
+              year. Renew annually to keep your spot on the team sheet.
+            </p>
+            <p class="tier-note">Renewable annually.</p>
+          </article>
+
+          <article class="tier-card is-required stagger-child">
+            <span class="tier-badge is-required">Required</span>
+            <p class="tier-label">Monthly Contribution</p>
+            <h3 class="tier-name">Keep the club running.</h3>
+            <div class="tier-price">
+              <span class="tier-amount">&#8377;50</span>
+              <span class="tier-period">/ month</span>
+            </div>
+            <p class="tier-desc">
+              Mandatory monthly contribution for every active member &mdash; whether you
+              joined lifetime or annual. Keeps the ground running, lights on, and
+              equipment fresh. Pay via UPI or cash to admin.
+            </p>
+            <p class="tier-note">Required for all active members.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Apply CTA -->
+    <section class="section">
+      <div class="container">
+        <div class="apply-shell slide-up">
+          <p class="text-label">Ready?</p>
+          <h2 class="text-h2 mt-3">Open the membership form.</h2>
+          <p class="text-body text-secondary">
+            Two minutes. Photo, basic details, plan of choice. We&rsquo;ll email you back
+            within 2&ndash;5 days with your member ID.
+          </p>
+          <a class="btn btn-primary btn-lg" href="https://forms.gle/4QRyji4V24meNWja7" target="_blank" rel="noopener">
+            <span>Apply now</span>
+            <i data-lucide="external-link"></i>
+          </a>
+          <p class="text-tiny text-muted mt-4">
+            Opens in a new tab. Photo IDs (Aadhar / PAN) stay private &mdash; used only for
+            club records.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+      <div class="container">
+        <div class="text-center" style="max-width: 540px; margin: 0 auto var(--space-6);">
+          <p class="text-label slide-up">FAQ</p>
+          <h2 class="text-display mt-3 slide-up">Common questions</h2>
+        </div>
+
+        <div class="faq slide-up">
+          <div class="faq-item">
+            <p class="faq-q"><i data-lucide="circle-help"></i> Is there a membership fee?</p>
+            <p class="faq-a">
+              Yes, in two parts. <strong>One-time joining fee</strong> &mdash; pick either
+              &#8377;2400 lifetime or &#8377;300 per year. <strong>Plus, monthly
+              &#8377;50</strong> &mdash; mandatory for every active member, regardless
+              of joining plan. So most members pay either &#8377;2400 + &#8377;50/month,
+              or &#8377;300/year + &#8377;50/month.
+            </p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q"><i data-lucide="circle-help"></i> I&rsquo;m a lifetime member &mdash; do I still pay monthly?</p>
+            <p class="faq-a">
+              Yes. Lifetime &#8377;2400 covers your joining fee for good &mdash; no
+              renewals on that. But the &#8377;50/month is a separate, ongoing
+              contribution that every active member pays. It funds the day-to-day:
+              ground prep, water, equipment, match-day costs.
+            </p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q"><i data-lucide="circle-help"></i> Do I need experience?</p>
+            <p class="faq-a">Not at all. We care about commitment more than skill. Both will be tested.</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q"><i data-lucide="circle-help"></i> What documents do I need?</p>
+            <p class="faq-a">A clear photo, and ID proof (Aadhar / PAN). IDs are stored privately and used only to verify identity.</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q"><i data-lucide="circle-help"></i> How long does approval take?</p>
+            <p class="faq-a">Typically 2&ndash;5 days. You will get an email either way.</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q"><i data-lucide="circle-help"></i> Can I still attend matches if not selected?</p>
+            <p class="faq-a">Yes. The stands are always open. Bring the village.</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q"><i data-lucide="circle-help"></i> Can I switch plans later?</p>
+            <p class="faq-a">
+              Yes. Email us at
+              <a href="mailto:harichandanpurcricketclub@gmail.com" class="text-accent">harichandanpurcricketclub@gmail.com</a>
+              and we&rsquo;ll update your record.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="navbar-brand" href="/index.html">
+            <img class="navbar-brand-logo" src="/images/logo.svg" alt="HCC" width="36" height="36">
+            <span data-club-name>Harichandanpur Club</span>
+          </a>
+          <p class="text-small text-muted mt-4" style="max-width: 320px;">
+            Local kids, big dreams. The official home of Harichandanpur Club.
+          </p>
+        </div>
+        <div>
+          <p class="footer-col-title">Explore</p>
+          <a class="footer-link" href="/about.html">About</a>
+          <a class="footer-link" href="/team.html">Team</a>
+          <a class="footer-link" href="/matches.html">Matches</a>
+          <a class="footer-link" href="/gallery.html">Gallery</a>
+        </div>
+        <div>
+          <p class="footer-col-title">Community</p>
+          <a class="footer-link" href="/news.html">News</a>
+          <a class="footer-link" href="/membership.html">Join the club</a>
+          <a class="footer-link" href="/contact.html">Contact</a>
+          <a class="footer-link" href="/login.html">Player login</a>
+        </div>
+        <div>
+          <p class="footer-col-title">Reach us</p>
+          <a class="footer-link" href="mailto:harichandanpurcricketclub@gmail.com">harichandanpurcricketclub@gmail.com</a>
+          <div class="footer-socials mt-3">
+            <a class="footer-social" href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+            <a class="footer-social" href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+            <a class="footer-social" href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-year>2026</span> Harichandanpur Club. All rights reserved.</span>
+        <span class="text-muted">
+          Built with love in Harichandanpur
+          <span aria-hidden="true"> · </span>
+          <a href="/admin.html" class="footer-bottom-link">Admin</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

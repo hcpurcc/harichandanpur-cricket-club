@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Harichandanpur Cricket Club">
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#0A0E0F" stroke="#00FF88" stroke-width="2"/>
+  <path d="M14 18v28M14 32h12M26 18v28" stroke="#00FF88" stroke-width="3.5" stroke-linecap="square"/>
+  <path d="M38 18l12 28M50 18L38 46" stroke="#FFD700" stroke-width="3.5" stroke-linecap="square"/>
+  <circle cx="32" cy="54" r="2.4" fill="#00FF88"/>
+</svg>

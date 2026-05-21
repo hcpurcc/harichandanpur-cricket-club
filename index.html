@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0A0E0F">
+  <title>Harichandanpur Club — Built on the streets. Forged in the field.</title>
+  <meta name="description" content="Official site of Harichandanpur Club (HCC). Squad, matches, gallery, news, and membership.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Harichandanpur Club">
+  <meta property="og:description" content="Squad, matches, gallery and more from HCC.">
+  <meta property="og:image" content="/images/logo.svg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&display=swap">
+
+  <!-- Project styles -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/animations.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js"></script>
+
+  <!-- Swiper styles (used by gallery teaser) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+  <style>
+    /* ----- Home-specific styles (not generic enough for style.css) ----- */
+
+    /* Hero animated gradient mesh background */
+    .hero-bg-mesh {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .hero-bg-mesh::before,
+    .hero-bg-mesh::after {
+      content: '';
+      position: absolute;
+      width: 70vw;
+      height: 70vw;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.55;
+      will-change: transform;
+    }
+    .hero-bg-mesh::before {
+      top: -20vw;
+      left: -20vw;
+      background: radial-gradient(circle at center, rgba(0, 255, 136, 0.55), transparent 70%);
+      animation: drift-a 18s ease-in-out infinite alternate;
+    }
+    .hero-bg-mesh::after {
+      bottom: -30vw;
+      right: -25vw;
+      background: radial-gradient(circle at center, rgba(255, 215, 0, 0.30), transparent 70%);
+      animation: drift-b 22s ease-in-out infinite alternate;
+    }
+    .hero-bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    }
+    .hero-bg-noise {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(0,255,136,0.08), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(255,215,0,0.06), transparent 40%);
+    }
+
+    @keyframes drift-a {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(15vw, 10vw) scale(1.15); }
+    }
+    @keyframes drift-b {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(-10vw, -8vw) scale(1.1); }
+    }
+
+    .hero-content {
+      padding-block: var(--space-9) var(--space-7);
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-5);
+    }
+    .hero-eyebrow .status-dot { animation: pulse 1.5s ease-in-out infinite; }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(48px, 10vw, 128px);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-5);
+    }
+    .hero-title .word {
+      display: inline-block;
+      overflow: hidden;
+      margin-right: 0.18em;
+    }
+    .hero-title .word > span {
+      display: inline-block;
+    }
+    .hero-tagline {
+      max-width: 540px;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-6);
+    }
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+    .hero-scroll {
+      position: absolute;
+      left: 50%;
+      bottom: var(--space-5);
+      transform: translateX(-50%);
+    }
+
+    /* Stats bar */
+    .stats-section .stat {
+      align-items: flex-start;
+      padding: var(--space-5);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      transition: border-color var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+    }
+    .stats-section .stat:hover {
+      border-color: var(--border-active);
+      transform: translateY(-4px);
+    }
+    .stats-section .stat-icon {
+      width: 32px;
+      height: 32px;
+      color: var(--accent-neon);
+      margin-bottom: var(--space-3);
+    }
+
+    /* Section header */
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    /* Latest match card */
+    .latest-match-card {
+      padding: var(--space-6);
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    }
+    .match-versus {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: var(--space-5);
+      margin-block: var(--space-5);
+    }
+    .match-side {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .match-side.opponent { align-items: flex-end; text-align: right; }
+    .match-side-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(20px, 3vw, 28px);
+    }
+    .match-vs {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--accent-neon);
+      letter-spacing: 0.1em;
+    }
+    .match-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3) var(--space-5);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--border);
+    }
+    .match-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    .match-meta-item i { color: var(--accent-neon); width: 16px; height: 16px; }
+
+    /* Skeleton states */
+    .skeleton-card { height: 220px; }
+    .skeleton-line { height: 14px; border-radius: 6px; margin-block: 6px; }
+
+    /* Gallery teaser */
+    .gallery-swiper {
+      width: 100%;
+      padding-block: var(--space-3);
+    }
+    .gallery-slide {
+      aspect-ratio: 4 / 5;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--bg-secondary);
+      position: relative;
+    }
+    .gallery-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--dur-slow) var(--ease-out);
+    }
+    .gallery-slide:hover img { transform: scale(1.06); }
+    .gallery-slide-caption {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: var(--space-4);
+      font-size: 13px;
+      color: var(--text-primary);
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    }
+
+    /* CTA section */
+    .cta-section {
+      background:
+        radial-gradient(ellipse at top, rgba(0,255,136,0.10), transparent 60%),
+        var(--bg-primary);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .cta-section .text-hero { margin-bottom: var(--space-4); }
+    .cta-section .text-body-lg {
+      max-width: 540px;
+      margin: 0 auto var(--space-6);
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body data-page="home">
+
+  <!-- ============================ NAVBAR ============================ -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a class="navbar-brand" href="/index.html">
+        <img class="navbar-brand-logo" src="/images/logo.svg" alt="HCC logo" width="36" height="36">
+        <span>Harichandanpur Club</span>
+      </a>
+      <nav class="navbar-links" aria-label="Primary">
+        <a class="navbar-link" data-page="home"       href="/index.html">Home</a>
+        <a class="navbar-link" data-page="about"      href="/about.html">About</a>
+        <a class="navbar-link" data-page="team"       href="/team.html">Team</a>
+        <a class="navbar-link" data-page="matches"    href="/matches.html">Matches</a>
+        <a class="navbar-link" data-page="gallery"    href="/gallery.html">Gallery</a>
+        <a class="navbar-link" data-page="news"       href="/news.html">News</a>
+        <a class="navbar-link" data-page="contact"    href="/contact.html">Contact</a>
+        <a class="btn btn-primary btn-sm" href="/membership.html">Join</a>
+      </nav>
+      <button class="navbar-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============================ HERO ============================ -->
+    <section class="hero">
+      <div class="hero-bg">
+        <div class="hero-bg-grid"></div>
+        <div class="hero-bg-mesh"></div>
+        <div class="hero-bg-noise"></div>
+      </div>
+
+      <div class="container hero-content">
+        <div class="hero-eyebrow fade-in">
+          <span class="status-dot is-live"></span>
+          <span class="text-tiny text-secondary">Est. 2024 · Harichandanpur</span>
+        </div>
+
+        <h1 class="hero-title" aria-label="Harichandanpur Club">
+          <span class="word"><span data-hero-word>Harichandanpur</span></span><br>
+          <span class="word"><span data-hero-word>Club</span></span>
+        </h1>
+
+        <p class="hero-tagline text-body-lg slide-up" data-delay="0.6">
+          Local kids, big dreams. Built on the streets, forged in the field.
+          This is where Harichandanpur plays.
+        </p>
+
+        <div class="hero-cta slide-up" data-delay="0.8">
+          <a class="btn btn-primary btn-lg" href="/membership.html">
+            <span>Join the club</span>
+            <i data-lucide="arrow-right"></i>
+          </a>
+          <a class="btn btn-secondary btn-lg" href="/team.html">
+            Meet the squad
+          </a>
+        </div>
+      </div>
+
+      <a href="#stats" class="hero-scroll scroll-cue" aria-label="Scroll to stats">
+        <span class="text-tiny">Scroll</span>
+        <span class="scroll-cue-arrow"></span>
+      </a>
+    </section>
+
+    <!-- ============================ STATS BAR ============================ -->
+    <section id="stats" class="section stats-section">
+      <div class="container">
+        <div class="section-eyebrow slide-up"><span class="text-label">By the numbers</span></div>
+        <div class="grid grid-4" data-stagger>
+          <div class="stat stagger-child">
+            <i data-lucide="users" class="stat-icon"></i>
+            <span class="stat-value counter" data-stat="totalPlayers" data-final="0">0</span>
+            <span class="stat-label">Active players</span>
+          </div>
+          <div class="stat stagger-child">
+            <i data-lucide="calendar-days" class="stat-icon"></i>
+            <span class="stat-value counter" data-stat="totalMatches" data-final="0">0</span>
+            <span class="stat-label">Matches played</span>
+          </div>
+          <div class="stat stagger-child">
+            <i data-lucide="trophy" class="stat-icon"></i>
+            <span class="stat-value counter" data-stat="wins" data-final="0">0</span>
+            <span class="stat-label">Wins</span>
+          </div>
+          <div class="stat stagger-child">
+            <i data-lucide="flame" class="stat-icon"></i>
+            <span class="stat-value counter" data-stat="upcomingMatches" data-final="0">0</span>
+            <span class="stat-label">Upcoming</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ LATEST MATCH ============================ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="slide-up">
+            <p class="text-label">Next up</p>
+            <h2 class="text-display mt-2">Match day</h2>
+          </div>
+          <a class="btn btn-ghost" href="/matches.html">
+            <span>View all matches</span>
+            <i data-lucide="arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="card card-elevated latest-match-card slide-up" data-latest-match>
+          <!-- Skeleton (replaced by JS once API responds) -->
+          <div class="skeleton skeleton-line" style="width: 30%;"></div>
+          <div class="match-versus">
+            <div class="match-side">
+              <div class="skeleton skeleton-line" style="width: 60%;"></div>
+              <div class="skeleton skeleton-line" style="width: 40%;"></div>
+            </div>
+            <div class="match-vs">VS</div>
+            <div class="match-side opponent">
+              <div class="skeleton skeleton-line" style="width: 60%; margin-left: auto;"></div>
+              <div class="skeleton skeleton-line" style="width: 40%; margin-left: auto;"></div>
+            </div>
+          </div>
+          <div class="match-meta">
+            <div class="skeleton skeleton-line" style="width: 120px;"></div>
+            <div class="skeleton skeleton-line" style="width: 120px;"></div>
+            <div class="skeleton skeleton-line" style="width: 100px;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ FEATURED PLAYERS ============================ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="slide-up">
+            <p class="text-label">Squad</p>
+            <h2 class="text-display mt-2">Meet the players</h2>
+          </div>
+          <a class="btn btn-ghost" href="/team.html">
+            <span>Full team</span>
+            <i data-lucide="arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="grid grid-auto-fill" data-stagger data-featured-players>
+          <!-- Skeletons (replaced by JS) -->
+          <div class="player-card stagger-child">
+            <div class="skeleton" style="aspect-ratio: 1/1;"></div>
+            <div class="player-card-body">
+              <div class="skeleton skeleton-line" style="width: 60%;"></div>
+              <div class="skeleton skeleton-line" style="width: 35%;"></div>
+            </div>
+          </div>
+          <div class="player-card stagger-child">
+            <div class="skeleton" style="aspect-ratio: 1/1;"></div>
+            <div class="player-card-body">
+              <div class="skeleton skeleton-line" style="width: 60%;"></div>
+              <div class="skeleton skeleton-line" style="width: 35%;"></div>
+            </div>
+          </div>
+          <div class="player-card stagger-child">
+            <div class="skeleton" style="aspect-ratio: 1/1;"></div>
+            <div class="player-card-body">
+              <div class="skeleton skeleton-line" style="width: 60%;"></div>
+              <div class="skeleton skeleton-line" style="width: 35%;"></div>
+            </div>
+          </div>
+          <div class="player-card stagger-child">
+            <div class="skeleton" style="aspect-ratio: 1/1;"></div>
+            <div class="player-card-body">
+              <div class="skeleton skeleton-line" style="width: 60%;"></div>
+              <div class="skeleton skeleton-line" style="width: 35%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ NEWS PREVIEW ============================ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="slide-up">
+            <p class="text-label">Newsroom</p>
+            <h2 class="text-display mt-2">Latest stories</h2>
+          </div>
+          <a class="btn btn-ghost" href="/news.html">
+            <span>All news</span>
+            <i data-lucide="arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="grid grid-3" data-stagger data-featured-news>
+          <article class="card card-hover stagger-child">
+            <div class="skeleton card-image"></div>
+            <div class="skeleton skeleton-line" style="width: 30%;"></div>
+            <div class="skeleton skeleton-line" style="width: 80%; height: 20px;"></div>
+            <div class="skeleton skeleton-line" style="width: 95%;"></div>
+          </article>
+          <article class="card card-hover stagger-child">
+            <div class="skeleton card-image"></div>
+            <div class="skeleton skeleton-line" style="width: 30%;"></div>
+            <div class="skeleton skeleton-line" style="width: 80%; height: 20px;"></div>
+            <div class="skeleton skeleton-line" style="width: 95%;"></div>
+          </article>
+          <article class="card card-hover stagger-child">
+            <div class="skeleton card-image"></div>
+            <div class="skeleton skeleton-line" style="width: 30%;"></div>
+            <div class="skeleton skeleton-line" style="width: 80%; height: 20px;"></div>
+            <div class="skeleton skeleton-line" style="width: 95%;"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ GALLERY TEASER ============================ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="slide-up">
+            <p class="text-label">Captured</p>
+            <h2 class="text-display mt-2">From the ground</h2>
+          </div>
+          <a class="btn btn-ghost" href="/gallery.html">
+            <span>Full gallery</span>
+            <i data-lucide="arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="swiper gallery-swiper slide-up" data-gallery-swiper>
+          <div class="swiper-wrapper">
+            <!-- Slides injected by home.js -->
+            <div class="swiper-slide"><div class="gallery-slide skeleton"></div></div>
+            <div class="swiper-slide"><div class="gallery-slide skeleton"></div></div>
+            <div class="swiper-slide"><div class="gallery-slide skeleton"></div></div>
+            <div class="swiper-slide"><div class="gallery-slide skeleton"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ CTA ============================ -->
+    <section class="section-lg cta-section">
+      <div class="container container-narrow">
+        <p class="text-label slide-up">Wanna play?</p>
+        <h2 class="text-hero gradient-text slide-up" data-delay="0.1">Join the squad.</h2>
+        <p class="text-body-lg slide-up" data-delay="0.2">
+          If sport is your thing and Harichandanpur is your turf, we have saved a spot for you.
+          Three membership plans — pick yours, apply in two minutes.
+        </p>
+        <div class="slide-up" data-delay="0.3">
+          <a class="btn btn-primary btn-lg" href="/membership.html">
+            <span>Apply now</span>
+            <i data-lucide="arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================ FOOTER ============================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="navbar-brand" href="/index.html">
+            <img class="navbar-brand-logo" src="/images/logo.svg" alt="HCC" width="36" height="36">
+            <span data-club-name>Harichandanpur Club</span>
+          </a>
+          <p class="text-small text-muted mt-4" style="max-width: 320px;">
+            Local kids, big dreams. The official home of Harichandanpur Club.
+          </p>
+        </div>
+        <div>
+          <p class="footer-col-title">Explore</p>
+          <a class="footer-link" href="/about.html">About</a>
+          <a class="footer-link" href="/team.html">Team</a>
+          <a class="footer-link" href="/matches.html">Matches</a>
+          <a class="footer-link" href="/gallery.html">Gallery</a>
+        </div>
+        <div>
+          <p class="footer-col-title">Community</p>
+          <a class="footer-link" href="/news.html">News</a>
+          <a class="footer-link" href="/membership.html">Join the club</a>
+          <a class="footer-link" href="/contact.html">Contact</a>
+          <a class="footer-link" href="/login.html">Player login</a>
+        </div>
+        <div>
+          <p class="footer-col-title">Reach us</p>
+          <a class="footer-link" href="mailto:harichandanpurcricketclub@gmail.com">harichandanpurcricketclub@gmail.com</a>
+          <div class="footer-socials mt-3">
+            <a class="footer-social" href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+            <a class="footer-social" href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+            <a class="footer-social" href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-year>2026</span> Harichandanpur Club. All rights reserved.</span>
+        <span class="text-muted">
+          Built with love in Harichandanpur
+          <span aria-hidden="true"> · </span>
+          <a href="/admin.html" class="footer-bottom-link">Admin</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================ CDN LIBS ============================ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+  <!-- ============================ APP SCRIPTS ============================ -->
+  <script type="module" src="/js/markdown.js"></script>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/pages/home.js"></script>
+</body>
+</html>

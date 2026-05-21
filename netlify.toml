@@ -1,0 +1,37 @@
+# Netlify configuration for Harichandanpur Cricket Club website
+# Static site deploy. No build step required (vanilla HTML/CSS/JS).
+
+[build]
+  publish = "."
+  command = ""
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Long-cache static assets
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# SPA-style fallback for missing pages -> custom 404
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

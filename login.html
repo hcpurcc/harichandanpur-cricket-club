@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0A0E0F">
+  <title>Sign in — Harichandanpur Club</title>
+  <meta name="description" content="Sign in to the Harichandanpur Club member area.">
+  <meta name="robots" content="noindex">
+
+  <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/animations.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <style>
+    body { padding-top: 0; }
+
+    .auth-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg-primary);
+    }
+    @media (max-width: 768px) {
+      .auth-shell { grid-template-columns: 1fr; }
+    }
+
+    /* Left: brand / hero panel */
+    .auth-hero {
+      position: relative;
+      overflow: hidden;
+      padding: var(--space-7);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(0,255,136,0.18), transparent 60%),
+        radial-gradient(circle at 80% 100%, rgba(255,215,0,0.10), transparent 60%),
+        var(--bg-secondary);
+      border-right: 1px solid var(--border);
+    }
+    @media (max-width: 768px) {
+      .auth-hero { display: none; }
+    }
+    .auth-hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+      pointer-events: none;
+    }
+    .auth-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+    }
+    .auth-hero-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-block: var(--space-5) var(--space-4);
+    }
+    .auth-hero-lead {
+      color: var(--text-secondary);
+      max-width: 380px;
+    }
+
+    /* Right: form panel */
+    .auth-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-6);
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 440px;
+    }
+    .auth-card-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-6);
+    }
+    .auth-card-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-3);
+    }
+    .auth-card-lead {
+      color: var(--text-secondary);
+      margin-bottom: var(--space-6);
+    }
+
+    /* Google button */
+    .btn-google {
+      width: 100%;
+      padding: 16px 24px;
+      background: #fff;
+      color: #1f1f1f;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+      border: 2px solid #fff;
+      cursor: pointer;
+      transition: background var(--dur-base) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+    }
+    .btn-google:hover { background: #f5f5f5; }
+    .btn-google:active { transform: scale(0.98); }
+    .btn-google:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .btn-google svg { width: 20px; height: 20px; }
+
+    /* State banners */
+    .state-banner {
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      margin-bottom: var(--space-5);
+      display: none;
+      gap: var(--space-3);
+      align-items: flex-start;
+    }
+    .state-banner.is-visible { display: flex; }
+    .state-banner i { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+    .state-banner.is-info    { background: rgba(74,158,255,0.10); color: var(--info);    border: 1px solid rgba(74,158,255,0.30); }
+    .state-banner.is-warning { background: rgba(255,215,0,0.10);  color: var(--warning); border: 1px solid rgba(255,215,0,0.30); }
+    .state-banner.is-error   { background: rgba(255,68,68,0.10);  color: var(--danger);  border: 1px solid rgba(255,68,68,0.30); }
+    .state-banner.is-success { background: rgba(0,255,136,0.10);  color: var(--success); border: 1px solid rgba(0,255,136,0.30); }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-block: var(--space-5);
+      color: var(--text-muted);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .auth-footer-note {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      text-align: center;
+      margin-top: var(--space-6);
+    }
+    .auth-footer-note a { color: var(--accent-neon); }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-4);
+    }
+    .back-link:hover { color: var(--accent-neon); }
+  </style>
+</head>
+<body data-page="login">
+
+  <main class="auth-shell">
+
+    <!-- LEFT: branded hero -->
+    <aside class="auth-hero">
+      <div class="auth-hero-grid"></div>
+      <a class="navbar-brand" href="/index.html" style="position: relative; z-index: 1;">
+        <img class="navbar-brand-logo" src="/images/logo.svg" alt="HCC" width="36" height="36">
+        <span>Harichandanpur Club</span>
+      </a>
+
+      <div class="auth-hero-content">
+        <p class="text-label">Player area</p>
+        <h1 class="auth-hero-title">Sign in.<br><span class="gradient-text">Play on.</span></h1>
+        <p class="auth-hero-lead text-body-lg">
+          Track your stats, mark your availability for matches, stay in sync with the squad.
+          One Google account, one tap.
+        </p>
+      </div>
+
+      <p class="text-tiny text-muted" style="position: relative; z-index: 1;">
+        &copy; <span data-year>2026</span> HCC · No passwords, no fuss.
+      </p>
+    </aside>
+
+    <!-- RIGHT: sign-in panel -->
+    <section class="auth-panel">
+      <div class="auth-card">
+        <a class="back-link" href="/index.html">
+          <i data-lucide="arrow-left"></i>
+          <span>Back to site</span>
+        </a>
+
+        <div class="auth-card-logo">
+          <img src="/images/logo.svg" alt="HCC logo" width="32" height="32">
+          <strong>Harichandanpur Club</strong>
+        </div>
+
+        <h2 class="auth-card-title">Welcome back.</h2>
+        <p class="auth-card-lead">Sign in with the Google account you used to apply.</p>
+
+        <!-- State banners (only one visible at a time) -->
+        <div class="state-banner is-warning" data-banner="pending">
+          <i data-lucide="hourglass"></i>
+          <div>
+            <strong>Application under review</strong>
+            <p style="font-size: 13px; margin-top: 4px;">
+              Your membership is pending approval. You will receive an email once approved.
+            </p>
+          </div>
+        </div>
+
+        <div class="state-banner is-info" data-banner="no-account">
+          <i data-lucide="user-plus"></i>
+          <div>
+            <strong>We could not find your account</strong>
+            <p style="font-size: 13px; margin-top: 4px;">
+              Make sure you used the same Google account as your membership application.
+              Not a member yet? <a href="/membership.html" style="text-decoration: underline;">Apply here</a>.
+            </p>
+          </div>
+        </div>
+
+        <div class="state-banner is-error" data-banner="error">
+          <i data-lucide="alert-triangle"></i>
+          <div>
+            <strong>Sign-in failed</strong>
+            <p style="font-size: 13px; margin-top: 4px;" data-banner-detail>
+              Something went wrong. Try again.
+            </p>
+          </div>
+        </div>
+
+        <div class="state-banner is-success" data-banner="success">
+          <i data-lucide="check-circle"></i>
+          <div>
+            <strong data-banner-success-title>Signed in</strong>
+            <p style="font-size: 13px; margin-top: 4px;">Redirecting…</p>
+          </div>
+        </div>
+
+        <button class="btn-google" type="button" data-google-signin>
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="#4285F4" d="M21.35 11.1H12v3.92h5.32A5.6 5.6 0 0 1 12 18.5a6.5 6.5 0 1 1 0-13 6.06 6.06 0 0 1 4.27 1.66l2.78-2.78A10 10 0 1 0 12 22a9.6 9.6 0 0 0 9.7-9.66 7.6 7.6 0 0 0-.35-1.24z"/>
+            <path fill="#34A853" d="M3.15 7.35l3.23 2.37A6.07 6.07 0 0 1 12 6a6.06 6.06 0 0 1 4.27 1.66l2.78-2.78A10 10 0 0 0 3.15 7.35z"/>
+            <path fill="#FBBC05" d="M12 22a10 10 0 0 0 6.94-2.66l-3.21-2.62A5.97 5.97 0 0 1 12 18.5a6 6 0 0 1-5.65-3.97L3.1 17a10 10 0 0 0 8.9 5z"/>
+            <path fill="#EA4335" d="M21.35 11.1H12v3.92h5.32a5.6 5.6 0 0 1-2.41 3.7l3.21 2.62A9.6 9.6 0 0 0 22 12.34a7.6 7.6 0 0 0-.65-1.24z"/>
+          </svg>
+          <span data-google-label>Sign in with Google</span>
+        </button>
+
+        <div class="auth-divider">or</div>
+
+        <p class="text-small text-center text-muted">
+          Not a member yet?
+          <a href="/membership.html" class="text-accent" style="text-decoration: underline;">Apply for membership</a>
+        </p>
+
+        <p class="auth-footer-note">
+          By signing in you agree to be a decent human and respect your teammates.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module" src="/js/pages/login.js"></script>
+</body>
+</html>
