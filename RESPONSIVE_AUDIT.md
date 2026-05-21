@@ -2,20 +2,21 @@
 
 **Date:** 2026-05-21
 **Scope:** All 12 pages (index, about, team, matches, gallery, news, contact, membership, login, dashboard, admin, 404) across 7 breakpoints (320, 375, 414, 768, 1024, 1440, 1920).
-**Files touched:** `css/responsive.css`, `js/main.js`, `index.html` (audit-driven changes only — see "Pending fixes" for next batch).
+**Files touched:** `css/style.css`, `css/responsive.css`, `js/main.js`, all page HTML files, `index.html`, `matches.html`, `gallery.html`, `admin.html` (round 3 mobile fixes).
 
 ---
 
 ## TL;DR
 
-The site is already mobile-first done well. Most grids use `auto-fit/auto-fill` with `minmax`, and most page-level layouts have explicit `@media (max-width: 768px)` overrides. The bugs that did exist were concentrated in three places:
+The site is already mobile-first done well. Most grids use `auto-fit/auto-fill` with `minmax`, and most page-level layouts have explicit `@media (max-width: 768px)` overrides. Round 3 resolves the remaining mobile blockers:
 
-1. **Mobile menu** (showstopper) — wrong breakpoint, invisible backdrop, drawer collapsed to zero height.
-2. **Hero title on `index.html`** — `HARICHANDANPUR` clipped on phones under ~480px.
-3. **`matches.html` match card grid** — fixed 3-column layout did not stack on mobile.
-4. **`gallery.html` lightbox** — nav arrows overlap the image on small screens.
+1. **Mobile menu** (showstopper) — replaced the navbar pseudo-element backdrop with a body-level `.menu-backdrop`.
+2. **Hero title on `index.html`** — tightened the clamp and line height for 320-414px phones.
+3. **`matches.html` match card grid** — stacks below 480px.
+4. **`gallery.html` lightbox** — nav arrows move to a bottom toolbar below 640px.
+5. **`admin.html` reject form** — input no longer overflows on tiny phones.
 
-Items 1 and 2 are fixed and committed. Items 3 and 4 are flagged below — waiting for sign-off before applying.
+All items from the previous pending list are now applied locally.
 
 ---
 
@@ -35,8 +36,8 @@ Items 1 and 2 are fixed and committed. Items 3 and 4 are flagged below — waiti
 **What changed:**
 
 - Hamburger now shows up to **1023 px** (covers all phone + tablet portrait/landscape).
-- Backdrop uses explicit `height: 100vh; height: 100dvh;` instead of `inset: 0` — bypasses the navbar's containing-block trap.
-- Drawer uses explicit `top: var(--nav-height); height: calc(100vh - var(--nav-height))` for the same reason.
+- Backdrop is now a body-level `.menu-backdrop` sibling on every HTML page, so it is no longer trapped inside `.navbar`'s `backdrop-filter` stacking context.
+- Drawer uses explicit `top: var(--nav-height); height: calc(100vh - var(--nav-height))` and a raised open-menu stacking level so it stays above the backdrop.
 - Drawer background switched to `--bg-secondary` (more visually distinct from the dark page behind the backdrop).
 - Body scroll lock via `body.menu-open { overflow: hidden }` class.
 - Document-level click handler closes menu on outside clicks (backdrop area).
@@ -48,15 +49,14 @@ Items 1 and 2 are fixed and committed. Items 3 and 4 are flagged below — waiti
 ### Hero title overflow (`index.html`)
 
 - `.hero-title` font-size was `clamp(48px, 10vw, 128px)`. At 320 px viewport, 48 px floor was too large — "HARICHANDANPUR" did not fit, and `.word { overflow: hidden }` clipped the visible portion.
-- Changed to `clamp(36px, 11vw, 128px)` + `overflow-wrap: break-word; hyphens: auto;` as safety nets.
+- Round 3 tightened this further to `clamp(32px, 10vw, 128px)`, `line-height: 0.95`, and `letter-spacing: 0`.
 - Calculated fit:
-  - 320 px viewport, 16 px container pad each side, 36 px font, letter-spacing -0.04em → "HARICHANDANPUR" ≈ 257 px wide vs 288 px available. Fits.
-  - 375 px → ~295 px vs 343 px. Fits.
-  - 414 px → ~325 px vs 382 px. Fits.
+  - 320 px viewport, 16 px container pad each side, 32 px font — "HARICHANDANPUR" fits within the available width.
+  - 375 px and 414 px viewports retain cleaner two-word wrapping with less visual density.
 
 ---
 
-## Pending fixes (waiting for sign-off)
+## Completed fixes from previous pending list
 
 ### 1. `matches.html` — match card grid does not stack on mobile
 
@@ -68,14 +68,7 @@ Items 1 and 2 are fixed and committed. Items 3 and 4 are flagged below — waiti
 }
 ```
 
-On viewports under ~480 px, opponent name + score on the right side plus team name on the left can squeeze into vertical text spaghetti. Two options:
-
-| Option | Behaviour |
-|---|---|
-| **A** (recommended) | Below 480 px, stack vertically: `1fr` with center alignment. "VS" sits between teams as a horizontal divider. |
-| **B** | Keep three columns but shrink "VS" font and use `clamp()` for team names. Risk: still cramped. |
-
-If you pick A:
+On viewports under ~480 px, opponent name + score on the right side plus team name on the left can squeeze into vertical text spaghetti. Applied option A:
 
 ```css
 @media (max-width: 479px) {
@@ -99,7 +92,7 @@ If you pick A:
 
 At 320 px viewport: arrows are 48 px wide, positioned 24 px from each side. That leaves 320 - 24 - 48 - 48 - 24 = **176 px** for the image (image is set to `max-width: 92vw` ≈ 294 px). Result: arrows overlap the image edges and the close button sits over the top-right corner.
 
-**Recommendation:** on `<=640px`, move arrows to a bottom toolbar row and shrink close button.
+**Applied:** on `<=640px`, arrows move to a bottom toolbar row and the close button shrinks.
 
 ```css
 @media (max-width: 640px) {
@@ -132,7 +125,7 @@ At 320 px viewport: arrows are 48 px wide, positioned 24 px from each side. That
 
 ### 3. `admin.html` — `.reject-form input` may overflow at 320 px
 
-`min-width: 200px` on the reject reason input. Combined with the approve/reject buttons it can spill past viewport on the smallest phones. Low-impact (admin tool), but a one-liner fix.
+`min-width: 200px` on the reject reason input. Combined with the approve/reject buttons it can spill past viewport on the smallest phones. The input now drops to full width below 480px.
 
 ```css
 @media (max-width: 479px) {
@@ -195,14 +188,14 @@ These were checked across all pages and breakpoints — confirming no work neede
 | index.html | ⚠→✅ | ⚠→✅ | ✅ | ✅ | ✅ | ✅ | hero title fixed |
 | about.html | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | story-grid collapses at 768 |
 | team.html | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | auto-fill grid |
-| matches.html | ⚠ | ⚠ | ⚠ | ✅ | ✅ | ✅ | match-card-grid pending |
-| gallery.html | ⚠ | ⚠ | ⚠ | ✅ | ✅ | ✅ | lightbox arrows pending |
+| matches.html | ⚠→✅ | ⚠→✅ | ⚠→✅ | ✅ | ✅ | ✅ | match-card-grid stacks below 480 |
+| gallery.html | ⚠→✅ | ⚠→✅ | ⚠→✅ | ✅ | ✅ | ✅ | lightbox arrows moved below image |
 | news.html | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | featured collapses at 1024 |
 | contact.html | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | split collapses at 1024 |
 | membership.html | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | tier-grid collapses at 768 |
 | login.html | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | hero hidden on mobile |
 | dashboard.html | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | profile grid-area swap |
-| admin.html | ⚠ | ✅ | ✅ | ✅ | ✅ | ✅ | reject-form pending |
+| admin.html | ⚠→✅ | ✅ | ✅ | ✅ | ✅ | ✅ | reject-form input fixed |
 | 404.html | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | error-page utility |
 | **mobile menu** | ⚠→✅ | ⚠→✅ | ⚠→✅ | ⚠→✅ | ✅ | ✅ | all breakpoints fixed |
 
@@ -210,13 +203,12 @@ Legend: ✅ healthy | ⚠ has known issue | ⚠→✅ was broken, now fixed
 
 ---
 
-## Commits in this audit
+## Local change batches in this audit
 
 1. `Fix mobile menu: add backdrop, scroll lock, ESC, click-outside` — extends hamburger to ≤1023 px, adds class-based scroll lock, ESC + click-outside handlers.
 2. `Fix mobile menu round 2: escape backdrop-filter containing-block trap` — viewport-explicit sizing on backdrop + drawer so they actually render at viewport size instead of collapsing into navbar bounds.
 3. `Fix hero title overflow on mobile` — clamp floor reduced, break-word safety net added.
-
-Pending commits (waiting on sign-off):
-- `Fix matches.html: stack match card grid on mobile`
-- `Fix gallery.html: lightbox arrows below 640 px`
-- `Fix admin.html: reject-form input on tiny phones`
+4. `Fix mobile menu round 3: add body-level menu backdrop` — moves the overlay out of `.navbar` and adds backdrop click handling.
+5. `Fix matches.html: stack match card grid on mobile`
+6. `Fix gallery.html: lightbox arrows below 640 px`
+7. `Fix admin.html: reject-form input on tiny phones`

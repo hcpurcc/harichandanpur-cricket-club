@@ -63,47 +63,33 @@
    Up to 8 nav items + a Join CTA cannot fit horizontally below laptop width,
    so the hamburger drawer is the default through tablet landscape.
    Body scroll lock is applied via JS as `body.menu-open` and pairs with the
-   backdrop / blur defined below. */
+   body-level menu backdrop in style.css. */
 
 @media (max-width: 1023px) {
   /* Show toggle, hide horizontal links by default */
   .navbar-links { display: none; }
   .navbar-toggle { display: inline-flex; }
 
-  /* Keep brand + toggle above the blurred backdrop pseudo-element */
+  .navbar.is-open {
+    background: var(--bg-secondary);
+    z-index: 10000;
+  }
+
+  /* Keep brand + toggle above the drawer background */
   .navbar-brand,
   .navbar-toggle {
     position: relative;
-    z-index: 2;
+    z-index: 10002;
   }
 
-  /* Backdrop — full-screen dark blur behind the menu panel.
-     NOTE: .navbar has backdrop-filter, which makes IT the containing block for
-     fixed descendants. So we cannot rely on `inset: 0` — we must use explicit
-     viewport units (vh/dvh) to escape navbar's bounds. */
-  .navbar.is-open::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100vh;
-    height: 100dvh;
-    background: rgba(0, 0, 0, 0.72);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 0;
-    animation: hcc-menu-fade var(--dur-base) var(--ease-out);
-  }
-
-  /* Drawer — sits below the navbar bar, above the backdrop. Explicit height
-     instead of `bottom: 0` for the same containing-block reason. */
+  /* Drawer sits below the navbar bar, above the body-level backdrop. */
   .navbar.is-open .navbar-links {
     display: flex;
     position: fixed;
     top: var(--nav-height);
-    left: 0;
-    right: 0;
+    right: var(--container-pad);
+    left: auto;
+    width: min(360px, calc(100vw - (var(--container-pad) * 2)));
     height: calc(100vh - var(--nav-height));
     height: calc(100dvh - var(--nav-height));
     flex-direction: column;
@@ -112,9 +98,10 @@
     padding: var(--space-6) var(--container-pad) var(--space-7);
     background: var(--bg-secondary);
     border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
     overflow-y: auto;
     overscroll-behavior: contain;
-    z-index: 1;
+    z-index: 10001;
     animation: hcc-menu-slide var(--dur-base) var(--ease-out);
   }
   .navbar.is-open .navbar-link {
@@ -148,11 +135,6 @@
 /* Lock body scroll while the mobile menu is open (set from JS) */
 body.menu-open {
   overflow: hidden;
-}
-
-@keyframes hcc-menu-fade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
 }
 
 @keyframes hcc-menu-slide {

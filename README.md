@@ -130,6 +130,8 @@ HCC-Website/
 
 **Change a nav link:** Edit the navbar HTML in each page file (intentionally duplicated for simplicity).
 
+**Change mobile menu behavior:** Keep `<div class="menu-backdrop" aria-hidden="true"></div>` directly after `<body>` on every HTML page. The backdrop lives in `css/style.css`, drawer sizing lives in `css/responsive.css`, and click/ESC/scroll-lock behavior lives in `js/main.js`.
+
 **Add an admin:** `js/config.js` → `ADMIN_EMAILS`. Also update the Apps Script admin list so backend actions work.
 
 See [`DEPLOY.md`](./DEPLOY.md) for the deploy checklist and post-deploy smoke tests.

@@ -96,6 +96,7 @@ function initNavbar() {
 
   const toggle = navbar.querySelector('.navbar-toggle');
   const linksContainer = navbar.querySelector('.navbar-links');
+  const backdrop = document.querySelector('.menu-backdrop');
 
   const openMenu = () => {
     navbar.classList.add('is-open');
@@ -119,6 +120,10 @@ function initNavbar() {
         openMenu();
       }
     });
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener('click', closeMenu);
   }
 
   /* Close menu when a link is clicked (mobile). */
