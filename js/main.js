@@ -95,25 +95,63 @@ function initNavbar() {
   if (!navbar) return;
 
   const toggle = navbar.querySelector('.navbar-toggle');
+  const linksContainer = navbar.querySelector('.navbar-links');
+
+  const openMenu = () => {
+    navbar.classList.add('is-open');
+    document.body.classList.add('menu-open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+  };
+
+  const closeMenu = () => {
+    if (!navbar.classList.contains('is-open')) return;
+    navbar.classList.remove('is-open');
+    document.body.classList.remove('menu-open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  };
+
   if (toggle) {
-    toggle.addEventListener('click', () => {
-      navbar.classList.toggle('is-open');
-      const isOpen = navbar.classList.contains('is-open');
-      toggle.setAttribute('aria-expanded', String(isOpen));
-      document.body.style.overflow = isOpen ? 'hidden' : '';
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (navbar.classList.contains('is-open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
     });
   }
 
   /* Close menu when a link is clicked (mobile). */
   navbar.querySelectorAll('.navbar-link').forEach((link) => {
-    link.addEventListener('click', () => {
-      if (navbar.classList.contains('is-open')) {
-        navbar.classList.remove('is-open');
-        document.body.style.overflow = '';
-        if (toggle) toggle.setAttribute('aria-expanded', 'false');
-      }
-    });
+    link.addEventListener('click', closeMenu);
   });
+
+  /* Close on click outside the menu panel (backdrop area). */
+  document.addEventListener('click', (e) => {
+    if (!navbar.classList.contains('is-open')) return;
+    const target = e.target;
+    if (linksContainer && linksContainer.contains(target)) return;
+    if (toggle && toggle.contains(target)) return;
+    closeMenu();
+  });
+
+  /* Close on ESC. */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navbar.classList.contains('is-open')) {
+      closeMenu();
+    }
+  });
+
+  /* If the viewport grows past the mobile breakpoint, drop any locked state. */
+  const desktopMql = window.matchMedia('(min-width: 1024px)');
+  const handleViewportChange = (event) => {
+    if (event.matches) closeMenu();
+  };
+  if (desktopMql.addEventListener) {
+    desktopMql.addEventListener('change', handleViewportChange);
+  } else if (desktopMql.addListener) {
+    desktopMql.addListener(handleViewportChange);
+  }
 
   /* Background state on scroll. */
   let lastY = window.scrollY;

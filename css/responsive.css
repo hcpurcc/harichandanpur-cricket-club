@@ -36,36 +36,6 @@
     grid-template-columns: 1fr;
   }
 
-  /* Navbar — show toggle, hide horizontal link list */
-  .navbar-links {
-    display: none;
-  }
-  .navbar-toggle {
-    display: inline-flex;
-  }
-
-  /* Mobile menu — full screen drawer when .is-open is set on parent */
-  .navbar.is-open .navbar-links {
-    display: flex;
-    position: fixed;
-    inset: var(--nav-height-mob) 0 0 0;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-3);
-    padding: var(--space-6) var(--container-pad);
-    background: var(--bg-primary);
-    border-top: 1px solid var(--border);
-    z-index: var(--z-dropdown);
-  }
-  .navbar.is-open .navbar-link {
-    font-size: 22px;
-    font-family: var(--font-display);
-    font-weight: 600;
-    padding-block: var(--space-3);
-    width: 100%;
-    border-bottom: 1px solid var(--border);
-  }
-
   /* Footer */
   .footer-grid {
     grid-template-columns: 1fr;
@@ -89,13 +59,111 @@
   }
 }
 
+/* ---------- Mobile + tablet menu ( <=1023px ) ----------
+   Up to 8 nav items + a Join CTA cannot fit horizontally below laptop width,
+   so the hamburger drawer is the default through tablet landscape.
+   Body scroll lock is applied via JS as `body.menu-open` and pairs with the
+   backdrop / blur defined below. */
+
+@media (max-width: 1023px) {
+  /* Show toggle, hide horizontal links by default */
+  .navbar-links { display: none; }
+  .navbar-toggle { display: inline-flex; }
+
+  /* Keep brand + toggle above the blurred backdrop pseudo-element */
+  .navbar-brand,
+  .navbar-toggle {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Backdrop — full-screen dark blur behind the menu panel.
+     NOTE: .navbar has backdrop-filter, which makes IT the containing block for
+     fixed descendants. So we cannot rely on `inset: 0` — we must use explicit
+     viewport units (vh/dvh) to escape navbar's bounds. */
+  .navbar.is-open::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    height: 100dvh;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 0;
+    animation: hcc-menu-fade var(--dur-base) var(--ease-out);
+  }
+
+  /* Drawer — sits below the navbar bar, above the backdrop. Explicit height
+     instead of `bottom: 0` for the same containing-block reason. */
+  .navbar.is-open .navbar-links {
+    display: flex;
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    height: calc(100vh - var(--nav-height));
+    height: calc(100dvh - var(--nav-height));
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+    padding: var(--space-6) var(--container-pad) var(--space-7);
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    z-index: 1;
+    animation: hcc-menu-slide var(--dur-base) var(--ease-out);
+  }
+  .navbar.is-open .navbar-link {
+    font-size: 20px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    padding-block: var(--space-3);
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .navbar.is-open .navbar-link.is-active {
+    color: var(--accent-neon);
+  }
+  .navbar.is-open .navbar-links .btn {
+    width: 100%;
+    margin-top: var(--space-4);
+    justify-content: center;
+    min-height: 48px;
+  }
+
+  /* Animated icon swap when menu is open */
+  .navbar.is-open .navbar-toggle {
+    color: var(--accent-neon);
+  }
+}
+
+/* Lock body scroll while the mobile menu is open (set from JS) */
+body.menu-open {
+  overflow: hidden;
+}
+
+@keyframes hcc-menu-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes hcc-menu-slide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ---------- Large phone ( >=480px ) ---------- */
 
 @media (min-width: 480px) {
   .grid-2-sm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
-  .navbar-toggle { display: none; }
-  .navbar-links  { display: flex; }
 }
 
 /* ---------- Tablet portrait ( >=768px ) ---------- */
@@ -126,6 +194,10 @@
   :root {
     --container-pad: 40px;
   }
+
+  /* Restore horizontal nav, hide hamburger */
+  .navbar-toggle { display: none; }
+  .navbar-links  { display: flex; }
 
   .grid-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
