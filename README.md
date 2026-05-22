@@ -4,7 +4,7 @@ Official website for Harichandanpur Cricket Club (HCC). Static site, vanilla HTM
 
 **Live URL:** `https://harichandanpurcc.netlify.app` (after first deploy)
 **Shipping?** See [`DEPLOY.md`](./DEPLOY.md) for the full pre-flight checklist.
----
+----
 
 ## Stack
 
