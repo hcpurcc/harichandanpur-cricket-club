@@ -71,8 +71,11 @@
   .navbar-toggle { display: inline-flex; }
 
   .navbar.is-open {
-    background: var(--bg-secondary);
+    background: var(--bg-primary);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     z-index: 10000;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.42);
   }
 
   /* Keep brand + toggle above the drawer background */
@@ -87,18 +90,19 @@
     display: flex;
     position: fixed;
     top: var(--nav-height);
-    right: var(--container-pad);
-    left: auto;
-    width: min(360px, calc(100vw - (var(--container-pad) * 2)));
-    height: calc(100vh - var(--nav-height));
-    height: calc(100dvh - var(--nav-height));
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-height: calc(100vh - var(--nav-height));
+    max-height: calc(100dvh - var(--nav-height));
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-2);
     padding: var(--space-6) var(--container-pad) var(--space-7);
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border);
-    border-left: 1px solid var(--border);
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border-strong);
+    box-shadow: 0 22px 54px rgba(0, 0, 0, 0.58);
     overflow-y: auto;
     overscroll-behavior: contain;
     z-index: 10001;
