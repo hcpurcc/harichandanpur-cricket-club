@@ -53,7 +53,7 @@ export const ADMIN_EMAILS = [
 /* ---------- Club metadata ---------- */
 
 export const CLUB = {
-  name:     'Harichandanpur Club',
+  name:     'Harichandanpur Cricket Club',
   short:    'HCC',
   email:    'harichandanpurcricketclub@gmail.com',
   founded:  2024,

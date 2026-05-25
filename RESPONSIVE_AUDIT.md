@@ -1,4 +1,4 @@
-# Responsive Audit — Harichandanpur Club Website
+# Responsive Audit — Harichandanpur Cricket Club Website
 
 **Date:** 2026-05-21
 **Scope:** All 12 pages (index, about, team, matches, gallery, news, contact, membership, login, dashboard, admin, 404) across 7 breakpoints (320, 375, 414, 768, 1024, 1440, 1920).

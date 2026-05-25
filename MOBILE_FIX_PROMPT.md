@@ -2,7 +2,7 @@
 
 ## Context
 
-This is the Harichandanpur Club website (vanilla HTML/CSS/JS, Streetball Energy design). Live URL: `https://harichandanpurclub.netlify.app`
+This is the Harichandanpur Cricket Club website (vanilla HTML/CSS/JS, Streetball Energy design). Live URL: `https://harichandanpurclub.netlify.app`
 
 **2 prior commits already tried to fix the mobile menu:**
 1. `Fix mobile menu: add backdrop, scroll lock, ESC, click-outside`
@@ -14,7 +14,7 @@ Despite both commits, the actual rendered mobile menu **still has these critical
 
 ### Bug 1: Backdrop INVISIBLE
 - All 7 nav links visible (About, Team, Matches, Gallery, News, Contact, Join) ✅
-- **BUT** hero content (logo, "EST. 2026 · HARICHANDANPUR", title "HARICHANDANPUR CLUB", tagline "Local kids, big dreams...", "Join the club" button) is **fully visible THROUGH the menu links**.
+- **BUT** hero content (logo, "EST. 2026 · HARICHANDANPUR", title "Harichandanpur Cricket Club", tagline "Local kids, big dreams...", "Join the club" button) is **fully visible THROUGH the menu links**.
 - Menu links text and hero text are **overlapping** — reads like garbled text.
 - No dark overlay. No blur. No separation between menu and content.
 
@@ -236,7 +236,7 @@ Open Chrome DevTools, switch to **iPhone 12 Pro (390px)** preset, and load `inde
 - [ ] Body doesn't scroll behind menu (try scrolling while menu open)
 - [ ] Repeat on `about.html`, `team.html`, `matches.html`, `gallery.html`, `news.html`, `contact.html`, `membership.html`, `login.html` — backdrop works on ALL pages
 - [ ] Resize to 1024px+ desktop view → menu opens horizontally, no hamburger, no backdrop bug
-- [ ] Hero title "HARICHANDANPUR CLUB" reads cleanly at 320, 375, 414px — no awkward break, no overflow
+- [ ] Hero title "Harichandanpur Cricket Club" reads cleanly at 320, 375, 414px — no awkward break, no overflow
 
 **Take a screenshot of the WORKING mobile menu at 390px and put it in commit body or attach to PR.**
 
