@@ -2,7 +2,7 @@
 
 ## Context
 
-This is the Harichandanpur Cricket Club website (vanilla HTML/CSS/JS, Streetball Energy design). Live URL: `https://harichandanpurclub.netlify.app`
+This is the Harichandanpur Cricket Club website (vanilla HTML/CSS/JS, Streetball Energy design). Live URL: `https://harichandanpurcricketclub.netlify.app`
 
 **2 prior commits already tried to fix the mobile menu:**
 1. `Fix mobile menu: add backdrop, scroll lock, ESC, click-outside`
@@ -257,7 +257,7 @@ Then push:
 git push
 ```
 
-Netlify auto-deploys. After ~45 seconds, hard-refresh `https://harichandanpurclub.netlify.app` on a real phone and verify.
+Netlify auto-deploys. After ~45 seconds, hard-refresh `https://harichandanpurcricketclub.netlify.app` on a real phone and verify.
 
 ---
 

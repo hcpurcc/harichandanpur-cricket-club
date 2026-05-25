@@ -4,4 +4,4 @@ Disallow: /login.html
 Disallow: /dashboard.html
 Disallow: /admin.html
 
-Sitemap: https://harichandanpurclub.netlify.app/sitemap.xml
+Sitemap: https://harichandanpurcricketclub.netlify.app/sitemap.xml
