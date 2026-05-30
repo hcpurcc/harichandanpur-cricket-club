@@ -27,6 +27,14 @@ const state = {
 
 /* ---------- Helpers ---------- */
 
+/* Formats a DOB value to "22 Mar 2000" */
+function formatDobAdmin(dob) {
+  if (!dob) return '—';
+  const d = new Date(dob);
+  if (isNaN(d.getTime())) return String(dob);
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -117,8 +125,9 @@ function renderRequests() {
       const photo = r.photo_url || r.cloudinary_url || DEFAULT_AVATAR;
       const email = r.email || '';
       const phone = r.phone || '';
-      const age   = r.age || '';
-      const role  = r.role || '';
+      const age     = r.age_calc?.display || (r.age ? `${r.age} years` : '');
+      const dob     = r.dob || '';
+      const role    = r.role || '';
       const date  = r.applied_at || r.timestamp || r.date || '';
       const note  = r.why || r.note || r.message || '';
 
@@ -129,8 +138,9 @@ function renderRequests() {
           <div class="request-info">
             <h3 class="request-name">${escapeHtml(name)}</h3>
             <div class="request-meta">
-              ${role  ? `<div><strong>Role:</strong> ${escapeHtml(role)}</div>` : ''}
-              ${age   ? `<div><strong>Age:</strong> ${escapeHtml(age)}</div>` : ''}
+              ${role ? `<div><strong>Role:</strong> ${escapeHtml(role)}</div>` : ''}
+              ${dob  ? `<div><strong>DOB:</strong> ${escapeHtml(formatDobAdmin(dob))}</div>` : ''}
+              ${age  ? `<div><strong>Age:</strong> ${escapeHtml(age)}</div>` : ''}
               ${email ? `<div><strong>Email:</strong> ${escapeHtml(email)}</div>` : ''}
               ${phone ? `<div><strong>Phone:</strong> ${escapeHtml(phone)}</div>` : ''}
               ${date  ? `<div><strong>Applied:</strong> ${escapeHtml(formatDate(date))}</div>` : ''}

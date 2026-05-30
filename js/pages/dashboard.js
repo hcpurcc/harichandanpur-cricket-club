@@ -26,6 +26,14 @@ const state = {
 
 /* ---------- Helpers ---------- */
 
+/* Formats a DOB value to "15 Aug 1995" */
+function formatDob(dob) {
+  if (!dob) return '—';
+  const d = new Date(dob);
+  if (isNaN(d.getTime())) return String(dob);
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -87,6 +95,8 @@ function renderProfile() {
   const photo = document.querySelector('[data-profile-photo]');
   const name  = document.querySelector('[data-profile-name]');
   const role  = document.querySelector('[data-profile-role]');
+  const dob = document.querySelector('[data-profile-dob]');
+  const age = document.querySelector('[data-profile-age]');
   const jersey = document.querySelector('[data-profile-jersey]');
   const loginId = document.querySelector('[data-profile-loginid]');
   const email = document.querySelector('[data-profile-email]');
@@ -100,6 +110,8 @@ function renderProfile() {
   }
   if (name) name.textContent = displayName;
   if (role) role.textContent = p.role || '—';
+  if (dob) dob.textContent = p.dob ? formatDob(p.dob) : '—';
+  if (age) age.textContent = p.age?.display || '—';
   if (jersey) jersey.textContent = p.jersey_no ? `#${p.jersey_no}` : '—';
   if (loginId) loginId.textContent = s?.loginId || p.login_id || '—';
   if (email) email.textContent = s?.user?.email || '—';
