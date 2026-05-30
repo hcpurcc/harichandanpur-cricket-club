@@ -498,6 +498,14 @@ const News = {
           <h4 class="news-admin-title">${escapeHtml(post.title || '(untitled)')}</h4>
           <div class="news-admin-content">${escapeHtml(previewText)}</div>
           <div class="news-admin-actions">
+            ${post.id ? `
+              <a class="btn-action" href="/news/${escapeAttr(post.id)}" target="_blank" rel="noopener" title="Open live post">
+                <i data-lucide="external-link"></i> View
+              </a>
+              <button class="btn-action" data-news-action="copy-link" data-post-id="${escapeAttr(post.id)}" type="button" title="Copy link">
+                <i data-lucide="link"></i> Copy link
+              </button>
+            ` : ''}
             <button class="btn-action" data-news-action="edit" type="button">
               <i data-lucide="edit-3"></i> Edit
             </button>
@@ -575,6 +583,13 @@ const News = {
     } else {
       const id = res.data?.id ? ` as ${res.data.id}` : '';
       toast(`Published${id}.`, 'success');
+      if (!isEditMode && res.data?.id) {
+        const link = `${window.location.origin}/news/${res.data.id}`;
+        setTimeout(() => {
+          toast(`🔗 Link: ${link} (copied!)`, 'success');
+          navigator.clipboard.writeText(link).catch(() => {});
+        }, 1200);
+      }
       this.clear();
     }
     await this.load();
@@ -713,15 +728,26 @@ const News = {
       return;
     }
 
-    const action = event.target.closest('[data-news-action]');
-    if (!action) return;
+    const btn = event.target.closest('[data-news-action]');
+    if (!btn) return;
 
-    const card = action.closest('[data-row]');
+    const action = btn.dataset.newsAction;
+
+    if (action === 'copy-link') {
+      const postId = btn.dataset.postId;
+      const url = `${window.location.origin}/news/${postId}`;
+      navigator.clipboard.writeText(url)
+        .then(() => toast('Link copied!', 'success'))
+        .catch(() => toast(`Link: ${url}`, 'success'));
+      return;
+    }
+
+    const card = btn.closest('[data-row]');
     const row = Number(card?.dataset.row);
     if (!row) return;
 
-    if (action.dataset.newsAction === 'edit') this.startEdit(row);
-    if (action.dataset.newsAction === 'delete') this.confirmDelete(row);
+    if (action === 'edit') this.startEdit(row);
+    if (action === 'delete') this.confirmDelete(row);
   },
 
   setDefaultDate() {

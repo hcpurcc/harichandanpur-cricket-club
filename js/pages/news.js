@@ -13,6 +13,10 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+function escapeAttr(value) {
+  return escapeHtml(value);
+}
+
 function formatDate(input) {
   if (!input) return '';
   const d = new Date(input);
@@ -61,7 +65,11 @@ function renderFeatured(post) {
           <span>${escapeHtml(formatDate(post.date))}</span>
           ${post.author ? `<span>· ${escapeHtml(post.author)}</span>` : ''}
         </div>
-        <h2 class="news-featured-title">${escapeHtml(post.title || 'Untitled')}</h2>
+        <h2 class="news-featured-title">
+          <a href="/news/${escapeAttr(post.id || '')}" style="color:inherit;text-decoration:none;">
+            ${escapeHtml(post.title || 'Untitled')}
+          </a>
+        </h2>
         <div class="news-body">${renderPostMarkdown(post.content || '')}</div>
       </div>
     </article>
@@ -82,7 +90,7 @@ function renderGrid(posts) {
       (n) => {
         const idAttr = n.id ? ` id="${escapeHtml(n.id)}"` : '';
         return `
-      <article class="news-card"${idAttr}>
+      <article class="news-card"${idAttr} onclick="window.location.href='/news/${escapeAttr(n.id || '')}'" style="cursor:pointer;">
         ${n.image_url
           ? `<div class="news-card-img"><img src="${escapeHtml(n.image_url)}" alt="${escapeHtml(n.title || '')}" loading="lazy"></div>`
           : `<div class="news-card-img"></div>`}
@@ -91,7 +99,7 @@ function renderGrid(posts) {
           ${n.author ? `<span>· ${escapeHtml(n.author)}</span>` : ''}
         </div>
         <h3 class="news-card-title">${escapeHtml(n.title || 'Untitled')}</h3>
-        <div class="news-body news-body-card">${renderPostMarkdown(n.content || '')}</div>
+        <p class="news-card-excerpt">${escapeHtml(renderMarkdownPreview(n.content || '', 120))}</p>
       </article>
     `;
       }
