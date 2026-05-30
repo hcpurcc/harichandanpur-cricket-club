@@ -20,6 +20,7 @@ const state = {
   player: null,
   stats: {},
   fees: { current: null, history: [] },
+  account: null,
   availability: {},   // matchId -> 'YES' | 'NO' | 'MAYBE'
   upcoming: []
 };
@@ -273,24 +274,55 @@ async function handleAvailabilityClick(event) {
 /* ---------- Render: fees ---------- */
 
 function renderFees() {
-  const monthEl = document.querySelector('[data-fees-month]');
-  const statusEl = document.querySelector('[data-fees-status]');
-  const historyEl = document.querySelector('[data-fees-history]');
+  const feesCard = document.querySelector('[data-fees-card]');
+  if (!feesCard) return;
 
-  const fees = state.fees || {};
-  const list = Array.isArray(fees) ? fees : (fees.history || []);
+  const account    = state.account;
+  const memberType = String(account?.member_type || '').toLowerCase();
+  const isLifetime = memberType.includes('life');
+
+  /* ── Lifetime member: show special card, no fees table ── */
+  if (isLifetime) {
+    feesCard.innerHTML = `
+      <div class="fees-lifetime">
+        <div class="fees-lifetime-icon">🏆</div>
+        <div>
+          <p class="fees-lifetime-title">Lifetime Member</p>
+          <p class="fees-lifetime-sub">No fees applicable. You're a legend.</p>
+        </div>
+        <span class="badge badge-success">Active</span>
+      </div>
+    `;
+    return;
+  }
+
+  /* ── Annual / unknown: show existing fees card ── */
+  const fees    = state.fees || {};
+  const list    = Array.isArray(fees) ? fees : (fees.history || []);
   const current = (Array.isArray(fees) ? fees[0] : fees.current) || list[0] || null;
 
-  const now = new Date();
+  const now          = new Date();
   const currentLabel = now.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
 
-  if (monthEl) {
-    monthEl.textContent = current?.month || currentLabel;
-  }
+  /* Rebuild the inner HTML so it always has the data-* targets */
+  feesCard.innerHTML = `
+    <div class="fees-current">
+      <div>
+        <p class="text-tiny text-muted">Current month</p>
+        <p class="text-h2 mt-2" data-fees-month>${escapeHtml(current?.month || currentLabel)}</p>
+      </div>
+      <span class="badge" data-fees-status>—</span>
+    </div>
+    <div class="fees-history" data-fees-history></div>
+  `;
+
+  const statusEl  = feesCard.querySelector('[data-fees-status]');
+  const historyEl = feesCard.querySelector('[data-fees-history]');
+
   if (statusEl) {
-    const status = String(current?.status || 'Unpaid').toLowerCase();
-    statusEl.textContent = current?.status || 'Unpaid';
-    statusEl.className = 'badge ' + (
+    const status = String(current?.paid === 'Y' ? 'Paid' : current?.status || 'Unpaid').toLowerCase();
+    statusEl.textContent = current?.paid === 'Y' ? 'Paid' : (current?.status || 'Unpaid');
+    statusEl.className   = 'badge ' + (
       status.includes('paid') ? 'badge-success' :
       status.includes('pend') ? 'badge-warning' :
       'badge-danger'
@@ -304,14 +336,16 @@ function renderFees() {
     }
     historyEl.innerHTML = list
       .slice(0, 12)
-      .map(
-        (row) => `
+      .map((row) => `
         <div class="fees-row">
           <span>${escapeHtml(row.month || row.period || '—')}</span>
-          <span><strong>${escapeHtml(row.status || '—')}</strong> ${row.amount ? `· ₹${escapeHtml(String(row.amount))}` : ''}</span>
+          <span>
+            <strong>${escapeHtml(row.paid === 'Y' ? 'Paid' : row.status || 'Unpaid')}</strong>
+            ${row.amount ? ` · ₹${escapeHtml(String(row.amount))}` : ''}
+            ${row.paid_date ? ` · ${escapeHtml(String(row.paid_date))}` : ''}
+          </span>
         </div>
-      `
-      )
+      `)
       .join('');
   }
 }
@@ -332,6 +366,7 @@ async function loadDashboardData() {
     state.player = data.player || null;
     state.stats = data.stats || {};
     state.fees = data.fees || { current: null, history: [] };
+    state.account = data.account || null;
     state.availability = data.availability || {};
   }
 
