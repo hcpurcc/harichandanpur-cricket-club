@@ -24,10 +24,16 @@ function renderMarkdown(content) {
 }
 
 function getPostId() {
-  /* URL is /news/NEWS001 — Netlify rewrites to /news/post.html
-     but window.location.pathname is still /news/NEWS001 */
-  const parts = window.location.pathname.replace(/\/$/, '').split('/');
-  return parts[parts.length - 1] || '';
+  const path  = window.location.pathname.replace(/\/$/, '');
+  const parts = path.split('/');
+  const last  = parts[parts.length - 1] || '';
+
+  // If Netlify resolved to the actual file or path is empty, return ''
+  if (!last || last === 'post.html' || last === 'news') return '';
+
+  // Must look like a news ID (e.g. NEWS001) — letters + digits only
+  // Accept any non-empty slug that isn't the HTML filename
+  return last;
 }
 
 function renderPost(post) {
@@ -109,7 +115,11 @@ function renderError(postId) {
 
 async function boot() {
   const postId = getPostId();
-  if (!postId) { window.location.href = '/news.html'; return; }
+
+  if (!postId) {
+    window.location.href = '/news.html';
+    return;
+  }
 
   const res = await api.getNews();
 
