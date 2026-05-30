@@ -99,5 +99,5 @@ export const FLAGS = {
   /* Set to false to disable Lenis smooth scroll site-wide. */
   smoothScroll: true,
   /* Cache GET responses for this many milliseconds (5 min). 0 disables cache. */
-  apiCacheTtlMs: 5 * 60 * 1000
+  apiCacheTtlMs: 0
 };
